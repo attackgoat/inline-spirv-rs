@@ -31,10 +31,6 @@ pub(crate) fn compile(
             shaderc::TargetEnv::Vulkan,
             shaderc::EnvVersion::Vulkan1_2,
         ),
-        (TargetEnvironmentType::Vulkan, TargetSpirvVersion::Spirv1_6) => (
-            shaderc::TargetEnv::Vulkan,
-            shaderc::EnvVersion::Vulkan1_3,
-        ),
         (TargetEnvironmentType::OpenGL, TargetSpirvVersion::Spirv1_0) => (
             shaderc::TargetEnv::OpenGL,
             shaderc::EnvVersion::OpenGL4_5,
