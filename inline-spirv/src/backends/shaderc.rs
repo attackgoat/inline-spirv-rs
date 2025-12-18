@@ -31,6 +31,10 @@ pub(crate) fn compile(
             shaderc::TargetEnv::Vulkan,
             shaderc::EnvVersion::Vulkan1_2,
         ),
+        (TargetEnvironmentType::Vulkan, TargetSpirvVersion::Spirv1_6) => (
+            shaderc::TargetEnv::Vulkan,
+            shaderc::EnvVersion::Vulkan1_3,
+        ),
         (TargetEnvironmentType::OpenGL, TargetSpirvVersion::Spirv1_0) => (
             shaderc::TargetEnv::OpenGL,
             shaderc::EnvVersion::OpenGL4_5,
@@ -61,7 +65,7 @@ pub(crate) fn compile(
     };
 
     let mut opt = shaderc::CompileOptions::new()
-        .ok_or("cannot create `shaderc::CompileOptions`")?;
+        .map_err(|_| "cannot create `shaderc::CompileOptions`")?;
     opt.set_target_env(target_env, vulkan_version as u32);
     opt.set_source_language(lang);
     opt.set_auto_bind_uniforms(cfg.auto_bind);
@@ -98,7 +102,7 @@ pub(crate) fn compile(
     }
 
     let dep_paths = RefCell::new(Vec::new());
-    let mut compiler = shaderc::Compiler::new().unwrap();
+    let compiler = shaderc::Compiler::new().unwrap();
     let path = if let Some(path) = path {
         dep_paths.borrow_mut().push(path.to_owned());
         path
